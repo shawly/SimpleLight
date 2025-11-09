@@ -22,8 +22,8 @@ include $(DEVKITARM)/gba_rules
 #---------------------------------------------------------------------------------
 TARGET		:= ezkernel
 BUILD		:= build
-SOURCES		:= source source/ff16
-INCLUDES	:= include source/ff16
+SOURCES		:= src src/ff16
+INCLUDES	:= include src/ff16
 DATA		:= font
 MUSIC		:=
 
