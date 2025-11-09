@@ -1,5 +1,7 @@
-#include <gba_base.h>
+#ifndef SIMPLELIGHT_GFX_SHOW_CHT_INCLUDED
+#define SIMPLELIGHT_GFX_SHOW_CHT_INCLUDED
 
+#include <gba_base.h>
 
 #define MAX_BUF_LEN 6000
 #define MAX_KEY_LEN 50
@@ -26,3 +28,5 @@ int Show_all_KEY_val(FIL* file);
 u32 Check_cht_file(TCHAR *gamefilename);
 void Open_cht_file(TCHAR *gamefilename,u32 havecht);
 void Trim(char s[]);
+
+#endif /* SIMPLELIGHT_GFX_SHOW_CHT_INCLUDED */

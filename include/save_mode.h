@@ -1,3 +1,6 @@
+#ifndef SIMPLELIGHT_SAVE_MODE_INCLUDED
+#define SIMPLELIGHT_SAVE_MODE_INCLUDED
+
 typedef struct SAVE_MODE_SECT{	
 	char gamecode[4];		
 	u8 savemode;	
@@ -2828,3 +2831,6 @@ const SAVE_MODE_  __attribute__((aligned(4))) saveMODE_table[] = {
 
 {"FFFF",0x00}
 };
+
+
+#endif /* SIMPLELIGHT_SAVE_MODE_INCLUDED */

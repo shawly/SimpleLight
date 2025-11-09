@@ -1,3 +1,6 @@
+#ifndef SIMPLELIGHT_PATCH_GBA_PATCH_INCLUDED
+#define SIMPLELIGHT_PATCH_GBA_PATCH_INCLUDED
+
 #include <gba_base.h>
 
 #include "ff.h"
@@ -71,3 +74,6 @@ void SetTrimSize(u8* buffer,u32 romsize,u32 iSize,u32 mode,BYTE saveMODE);
 u32 Find_spend_address_SpecialROM(u32* Data);
 
 void Patch_somegame(u32 *Data);
+
+
+#endif /* SIMPLELIGHT_PATCH_GBA_PATCH_INCLUDED */

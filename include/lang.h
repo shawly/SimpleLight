@@ -1,5 +1,5 @@
-#ifndef _LANG_H
-#define _LANG_H
+#ifndef SIMPLELIGHT_LANG_INCLUDED
+#define SIMPLELIGHT_LANG_INCLUDED
 
 
 extern char* gl_init_error;
@@ -95,5 +95,4 @@ extern unsigned char* ASC_DATA;
 void LoadEnglish(void);
 void LoadChinese(void);
 
-#endif
-
+#endif /* SIMPLELIGHT_LANG_INCLUDED */

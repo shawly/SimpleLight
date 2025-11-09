@@ -1,3 +1,6 @@
+#ifndef SIMPLELIGHT_FONT_ASC126_NEW3_INCLUDED
+#define SIMPLELIGHT_FONT_ASC126_NEW3_INCLUDED
+
 const long int font_bin_size = 1536;
 
 static const unsigned char ASC_DATA_NEW[]={
@@ -79,3 +82,6 @@ static const unsigned char ASC_DATA_NEW[]={
   0,  0, 64, 96, 32, 32, 16, 32, 32, 96, 64,  0, 80,240,160,  0,  0,  0,  0,  0,
   0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
 };
+
+
+#endif /* SIMPLELIGHT_FONT_ASC126_NEW3_INCLUDED */

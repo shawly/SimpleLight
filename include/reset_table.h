@@ -1,3 +1,5 @@
+#ifndef SIMPLELIGHT_RESET_TABLE_INCLUDED
+#define SIMPLELIGHT_RESET_TABLE_INCLUDED
 
 const int  __attribute__((aligned(4))) reset_table[] = { 
 0x4A5A4641,0x00000002,0x0000008D,0x000123B6,//0001 - F-Zero(JP).zip
@@ -2819,3 +2821,5 @@ const int  __attribute__((aligned(4))) reset_table[] = {
 0xFFFFFFFF
 
 };
+
+#endif /* SIMPLELIGHT_RESET_TABLE_INCLUDED */

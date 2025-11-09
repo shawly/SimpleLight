@@ -1,5 +1,5 @@
-//#ifndef	EZKERNEL_HEADER
-//#define EZKERNEL_HEADER
+#ifndef SIMPLELIGHT_EZKERNEL_INCLUDED
+#define SIMPLELIGHT_EZKERNEL_INCLUDED
 
 #include "images/image_sizes.h"
 #include "ff.h"
@@ -102,5 +102,4 @@ extern u16 gl_toggle_bold;
 u32 LoadRTSfile(TCHAR *filename);
 void ShowTime(u32 page_num ,u32 page_mode);
 
-
-//#endif
+#endif /* SIMPLELIGHT_EZKERNEL_INCLUDED */
