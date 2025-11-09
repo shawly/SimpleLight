@@ -1,3 +1,5 @@
+#ifndef SIMPLELIGHT_IMAGES_ICON_VMU_INCLUDED
+#define SIMPLELIGHT_IMAGES_ICON_VMU_INCLUDED
 
 //{{BLOCK(gImage_icon_vmu)
 
@@ -49,3 +51,6 @@ const unsigned short gImage_icon_vmu[224] __attribute__((aligned(4)))=
 };
 
 //}}BLOCK(gImage_icon_vmu)
+
+
+#endif /* SIMPLELIGHT_IMAGES_ICON_VMU_INCLUDED */

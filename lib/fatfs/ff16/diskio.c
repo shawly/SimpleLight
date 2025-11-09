@@ -9,8 +9,8 @@
 
 #include "ff.h"			/* Basic definitions of FatFs */
 #include "diskio.h"		/* Declarations FatFs MAI */
-#include "../Ezcard_OP.h"  /* EZFLASH: Include Ezcard_OP.h for Read/Write_SD_sectors */
-#include "../RTC.h"    /* EZFLASH: Include RTC.h for get_fattime */
+#include "driver/sd_card.h"  /* EZFLASH: include sd_card API */
+#include "driver/rtc.h"    /* EZFLASH: include rtc API for get_fattime */
 
 /*-----------------------------------------------------------------------*/
 /* Get Drive Status                                                      */

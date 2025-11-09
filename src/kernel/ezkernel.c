@@ -1308,7 +1308,7 @@ void CheckLanguage(void)
 	if (gl_select_lang == 0xE1E1) { //english
 		LoadEnglish();
 	}
-	else { //жпнд
+	else { //О©╫О©╫О©╫О©╫
 		LoadChinese();
 	}
 }
