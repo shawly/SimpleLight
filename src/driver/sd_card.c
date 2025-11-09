@@ -16,8 +16,8 @@ extern void LZ77UnCompWram(void* source, void* dest); //this is bad! bad!!
 extern void HardReset();
 
 #include "ezkernel.h"
-#include "draw.h"
-#include "Newest_FW_ver.h"
+#include "gfx/draw.h"
+#include "firmware/newest_fw_ver.h"
 extern u32 FAT_table_buffer[FAT_table_size/4]EWRAM_BSS;
 u32 crc32(unsigned char *buf, u32 size);
 

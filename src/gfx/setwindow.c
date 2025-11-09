@@ -7,9 +7,9 @@
 
 #include "lang.h"
 #include "ezkernel.h"
-#include "RTC.h"
-#include "draw.h"
-#include "Ezcard_OP.h"
+#include "driver/rtc.h"
+#include "gfx/draw.h"
+#include "driver/sd_card.h"
 
 extern u16 gl_select_lang;
 extern u16 gl_engine_sel;

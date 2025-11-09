@@ -7,12 +7,12 @@
 #include <string.h>
 #include <gba_systemcalls.h>
 
-#include "NORflash_OP.h"
-#include "Ezcard_OP.h"
+#include "driver/nor_flash.h"
+#include "driver/sd_card.h"
 #include "ezkernel.h"
-#include "draw.h"
 #include "lang.h"
-#include "GBApatch.h"
+#include "gfx/draw.h"
+#include "patch/gba_patch.h"
 #define DEBUG
 
 extern void delay(u32 R0);

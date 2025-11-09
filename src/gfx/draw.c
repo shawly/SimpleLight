@@ -10,7 +10,7 @@
 #include <gba_dma.h>
 
 #include "lang.h"
-#include "HZK12.h"
+#include "font/hzk12.h"
 
 
 #include "ezkernel.h"

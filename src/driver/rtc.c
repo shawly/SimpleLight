@@ -8,7 +8,7 @@
 #include <gba_dma.h>
 #include <string.h>
 
-#include "RTC.h"
+#include "driver/rtc.h"
 // --------------------------------------------------------------------
 void rtc_enable(void)
 {

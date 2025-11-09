@@ -7,8 +7,8 @@
 #include <gba_dma.h>
 
 #include "ezkernel.h"
-#include "showcht.h"
-#include "draw.h"
+#include "gfx/show_cht.h"
+#include "gfx/draw.h"
 
 FM_CHT_LINE tmpCHTFS ;
 

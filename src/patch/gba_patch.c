@@ -4,15 +4,15 @@
 #include <string.h>
 #include <gba_dma.h>
 
-#include "draw.h"
-#include "GBApatch.h"
-#include "gba_nes_patch.h"
+#include "patch/gba_patch.h"
+#include "patch/gba_nes_patch.h"
 #include "ezkernel.h"
-#include "reset_table.h"
 #include "lang.h"
-#include "showcht.h"
+#include "reset_table.h"
+#include "gfx/draw.h"
+#include "gfx/show_cht.h"
 
-#include "Ezcard_OP.h"
+#include "driver/sd_card.h"
 
 #define	_UnusedVram 		0x06012c00
 
