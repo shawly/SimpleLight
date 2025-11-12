@@ -22,11 +22,21 @@ include $(DEVKITARM)/gba_rules
 #---------------------------------------------------------------------------------
 TARGET		:= ezkernel
 BUILD		:= build
-SOURCES	    := src src/kernel src/driver src/gfx src/engine src/patch lib/fatfs/ff16 lib/aplib
-INCLUDES	:= include include/patch include/font include/images lib/fatfs/ff16 lib/aplib
+SOURCES	    := src src/kernel src/driver src/gfx src/patch lib/fatfs/src lib/aplib
+INCLUDES	:= include include/patch include/font include/images lib/fatfs/include lib/aplib
 DATA		:= font
 MUSIC		:=
 GRAPHICS	:=
+
+# when EMU=1, swap driver sources for emulator stubs and add flag
+ifeq ($(EMU),1)
+SOURCES := $(filter-out src/driver, $(SOURCES)) src/fakedriver
+CFLAGS += -DEMU
+TARGET := $(TARGET)_emu
+# Embed disk image(s) from diskimg/ as binary so the fake SD driver can serve sectors.
+# Place your FAT16/32 image at diskimg/disk.bin (or other .bin files) before building.
+DATA += diskimg/
+endif
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -68,11 +78,12 @@ ifneq ($(BUILDDIR), $(CURDIR))
 #---------------------------------------------------------------------------------
  
 export OUTPUT	:=	$(CURDIR)/$(TARGET)
-export KERNEL   :=  $(CURDIR)/ezkernel.bin
+export KERNEL   :=  $(CURDIR)/$(TARGET).bin
  
 export VPATH	:=	$(foreach dir,$(SOURCES),$(CURDIR)/$(dir)) \
 					$(foreach dir,$(DATA),$(CURDIR)/$(dir)) \
-					$(foreach dir,$(GRAPHICS),$(CURDIR)/$(dir))
+					$(foreach dir,$(GRAPHICS),$(CURDIR)/$(dir)) \
+					$(CURDIR)/diskimg
 
 export DEPSDIR	:=	$(CURDIR)/$(BUILD)
 
@@ -118,9 +129,11 @@ export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
  
 #---------------------------------------------------------------------------------
 $(BUILD):
+	@echo Cleaning previous build artifacts...
+	@rm -fr $(BUILD) $(TARGET).elf $(TARGET).gba $(KERNEL)
 	@[ -d $@ ] || mkdir -p $@
 	@$(MAKE) BUILDDIR=`cd $(BUILD) && pwd` --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
-	@rm -fr $(BUILD) $(TARGET).elf $(TARGET).gba
+	@rm -fr $(OUTPUT).elf
 
 #---------------------------------------------------------------------------------
 clean:
@@ -135,9 +148,12 @@ else
 # main targets
 #---------------------------------------------------------------------------------
 
+# if EMU=1, build .gba instead of .bin
+ifneq ($(strip $(EMU)),1)
 $(KERNEL)    :   $(OUTPUT).gba
 	@cp $(OUTPUT).gba $(KERNEL)
 	@rm $(OUTPUT).gba
+endif
 $(OUTPUT).gba	:	$(OUTPUT).elf
 
 $(OUTPUT).elf	:	$(OFILES)
@@ -163,8 +179,6 @@ soundbank.bin soundbank.h : $(AUDIOFILES)
 #---------------------------------------------------------------------------------
 	@echo $(notdir $<)
 	@$(bin2o)
-
-
  
 -include $(DEPSDIR)/*.d
  

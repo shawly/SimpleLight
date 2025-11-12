@@ -1,128 +1,88 @@
-###### FORKED FROM https://github.com/ez-flash/omega-kernel
+# `AdvancedDark` for EZ Flash Omega (not for Definitive Edition!)
 
-# SimpleLight for EZ Flash Omega
-###### *If you're looking for SimpleLight for the EZ Flash Omega **Definitive Edition**, check here: https://github.com/Sterophonick/omega-de-kernel*
+_A fork of [SimpleLight by Sterophonick](https://github.com/Sterophonick/SimpleLight)_
 
-Hello all!
+## Features
 
-I have been working on a new theme for the EZ-Flash Omega, and I call it Simple.
+- All features of SimpleLight
+- Updated FATFS module to v0.16
+- An easier way to build using Dev Containers with Visual Studio Code!
+- Custom EMU build mode that generates a version of the ezkernel that can be used with emulators for testing features without needing to flash the cartridge every time (tested with mGBA)
+- A revised project structure since the original [ez-flash/omega-kernel](https://github.com/ez-flash/omega-kernel) is a mess
+- Lots of AI slop since I am not a good C developer (I wouldn't even attempt working on this without assistance)
 
-It is a nice rounded theme with both light and dark options, and allows for many, many more file types to be used, such as Master System and ZX Spectrum ROMs to be launched, along with the ability to view bitmap images, read text documents, and play music. (shoutouts to Kuwanger for PogoShell)
+### Ideas for future features
 
-I completely redid all of the graphics, along with using a different font.
+- Integrated file management (copy/move/delete/rename files on the SD card)
+- Hide system files option (hidden SYSTEM and BACKUP folders to get a cleaner view)
+- Removal of Chinese language (I don't speak Chinese nor do I have the motivation to support it)
+- Integrate QoL features from [SimpleLight++](https://github.com/Deko29/SimpleLight-pp)
+- Custom themes loaded from SD card if possible
+- Background music maybe
 
-It also uses the 2019-05-04 version of Goomba Color, and has a save backup feature (shoutouts to Veikkos)
+## Installation
 
-Hope everyone likes it!
+This is not yet ready for use, so if you wanna try you have to build it yourself and use it at your own risk.
 
-Official forum thread:
-https://gbatemp.net/threads/new-theme-for-ez-flash-omega.520665/
+NEVER try to flash the `ezkernel_emu.bin` to your EZ Flash Omega, it will not work and may brick your cartridge! It is only for testing the firmware in emulators.
 
-## Installation instructions:
+### Building
 
-_**Follow the installation instructions in the !!!!!!!!!IMPORTANT!!!!!!!!!!!.TXT file in the GBAtemp package before reporting issues.**_
+Linux only for now, use WSL2 if you're on Windows.
 
-1. Copy the SYSTEM and BACKUP folder to the root of the SD Card.
-2. Move your IMGS, SAVER, RTS, and PATCH folders to SYSTEM.
-3. If you want the light theme, copy ezkernel-light.bin to the root of the SD Card. If you want the dark thing, do the same with ezkernel-dark.bin
-4. Rename the new kernel file to ezkernel.bin
-5. You're done!
+#### Setup Build Environment with Dev Containers
 
-## Registered file types:
-### Game ROMs
-    .gba - GBA ROM
-    .bin - GBA ROM
-    .mb - GBA Multiboot ROM
-    .agb - GBA ROM
-    .col - ColecoVision ROM (Requires Cologne) *
-    .gb - Game Boy ROM (Jaga's Goomba Color)
-    .gbc - Game Boy Color ROM (Jaga's Goomba Color)
-    .gg - Game Gear ROM (SMSAdvance)
-    .rom - MSX Cartridge ROM (MSXAdvance) **
-    .ngp - Neo Geo Pocket ROM (NGPAdvance)
-    .ngc - Neo Geo Pocket ROM (NGPAdvance)
-    .ngpc - Neo Geo Pocket Color ROM (NGPAdvance)
-    .nes  - NES ROM File (PocketNES)
-    .pce - PC-Engine ROM File (PCEAdvance)
-    .sms - Sega Master System ROM File (SMSAdvance)
-    .sg - Sega SG-1000 ROM File (SMSAdvance)
-    .sv - Watara Supervision ROM File (Wasabi)
-    .ws - WonderSwan ROM File (SwanAdvance)
-    .wsc - WonderSwan Color ROM File (SwanAdvance)
-    .z80 - 48k ZX-Spectrum Z80 ROM (ZXAdvance)
-    .c8 - Chip-8 ROM (Chip8Adv (My First Emulator! :D))
-    .arc - 4kb Emerson Arcadia 2001 ROM File
+1. Install [Visual Studio Code](https://code.visualstudio.com/) and [Docker](https://www.docker.com/get-started).
+2. Install the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) for Visual Studio Code.
+3. Clone this repository to your local machine.
+4. Open the cloned repository folder in Visual Studio Code.
+5. When prompted by Visual Studio Code, reopen the folder in a Dev Container.
+6. Once the Dev Container is built and running, open a terminal in Visual Studio Code (Terminal -> New Terminal).
 
-### Media
-    .jpg - JPEG Image
-    .jpeg - JPEG Image
-    .mod - ProTracker Module file
-    .bmp - Bitmap Image
-    .pcx - ZSoft Paintbrush PCX image
-    .mid - MIDI sequence
-    .nsf - NES Music file (Nintendo Sound File)
-    .vgm - SMS/GG music file
-    .vga - aPlib Compressed SMS/GG music file
-    .vgl - LZ77 Compressed SMS/GG music file
-    .txt - Text Document
-    .wav - Wave Sound (formatted in GSM 6.10)
-    .k3m - Krawall Advance Sound
-    .sb - MaxMod sound bank
-    .lz - LZ77 Compressed Image
-    .raw - Uncompressed Mode 3 Bitmap
-    .ap - aPlib compressed Mode 3 Bitmap
-    .bgf - BoyScout module
-    .mda - Sharp X68000 Music
-    .cwz - CWZ Music (IDK what exactly it is, but it was included with PogoShell 1.2)
+#### Build the Firmware for EZ Flash Omega
 
-*\* For Cologne, you have to make the ROM yourself.*\
-*\*\* MSXAdvance uses the C-BIOS, so I can redistribute the emulator.*
+```bash
+make
+```
 
-##### Cologne Emulator Guide:
-1. Download the latest version of Cologne.
-2. Open the EXE file.
-3. Take a blank file, and also add the Official Colecovision BIOS.
-4. Create col.gba in the PLUG folder.
+To flash just copy the `ezkernel.bin` to your sd card and hold R while turning on the GBA.
 
-### This ZIP file contains some tech demos/games:
-* XBill (SG-1000)
-* Sega Tween (SMS)
-* WinGG (Game Gear)
-* HuZERO (PC-Engine)
-* 1968 (ZX-Spectrum)
-* Adventures Of Gus and Rob (Neo Geo Pocket)
-* Kaboom! (Homebrew) (ColecoVision)
-* Motkonque (MSX)
-* SwanDriving (WonderSwan)
-* F8Z (Chip-8)
+#### Build the EMU Version for Testing in Emulators
 
-### How to build 
-1. Install [devkitPro](https://devkitpro.org/)
-2. Set the following environment variables to their correct directories: `DEVKITPRO, DEVKITARM, LIBGBA`
-3. Comment or uncomment the `#define DARK` line in `draw.h`. If uncommented, a dark theme is generated.
-4. Run the command `make`. If done successfully, this should give you an `ezkernel.bin` file.
-5. Follow the installation instructions above.
-4. Update your flashcart and enjoy! :)
+```bash
+make EMU=1
+```
 
-### Special Greetz & Contributors:
-Sasq\
-Moonlight\
-Kuwanger\
-veikkos\
-DarkFader\
-CoolHJ\
-Let's Emu!\
-Izder456\
-NuVanDibe\
-SLKun\
-Mintmoon\
-hitsgamer\
-Rocky5
+You can then load the `ezkernel_emu.bin` in an emulator that supports GBA flashcarts like mGBA.
+
+##### Modifying the disk image for EMU builds
+
+The EMU build includes a disk image that is mounted as fake SD card storage. By default, this is `diskimg/disk.bin`. You can replace this file with your own disk image. It should not be larger than 16MB since the max rom size is 32MB and the firmware itself takes up some space.
+
+To replace the disk image:
+
+```bash
+sudo apt-get update
+sudo apt-get install -y mtools
+
+truncate -s 16M diskimg/disk.bin
+mkfs.vfat -F 16 diskimg/disk.bin
+
+mmd  -i diskimg/disk.bin ::/SYSTEM
+mmd  -i diskimg/disk.bin ::/SYSTEM/PLUG
+mmd  -i diskimg/disk.bin ::/GAMES
+mmd  -i diskimg/disk.bin ::/HOMEBREW
+
+mcopy -i diskimg/disk.bin SYSTEM/RECENT.TXT ::/SYSTEM/RECENT.TXT
+mcopy -i diskimg/disk.bin ansi_console.gba ::/HOMEBREW/
+```
 
 ### Credits
+
 [EZ-FLASH](https://www.ezflash.cn/) - The original firmware & hardware creators\
+ChaN - FatFS library\
 Kuwanger - PogoShell plugin integration\
 Sterophonick - SIMPLE theme for EZO & EZODE\
 fluBBa - SMSAdvance, MSXAdvance, Cologne for GBA, Goomba for GBA (Original), PCEAdvance, PocketNES, SNESAdvance, Wasabi, NGPAdvance, SwanAdvance\
 [Jaga](https://github.com/EvilJagaGenius) - [Jaga's Goomba Color fork](https://github.com/EvilJagaGenius/jagoombacolor)\
-...and others!
+and everyone else who contributed to SimpleLight!

@@ -11,3 +11,9 @@ copy.bat
 .vscode/
 /*.pnpproj
 /*.pnps
+
+# Temporary Files
+*.sav
+
+# AI slop
+.github/copilot-instructions.md
