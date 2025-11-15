@@ -130,7 +130,7 @@ export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 #---------------------------------------------------------------------------------
 $(BUILD):
 	@echo Cleaning previous build artifacts...
-	@rm -fr $(BUILD) $(TARGET).elf $(TARGET).gba $(KERNEL)
+	@rm -fr $(BUILD) $(TARGET).elf $(TARGET).gba $(TARGET).sav $(KERNEL)
 	@[ -d $@ ] || mkdir -p $@
 	@$(MAKE) BUILDDIR=`cd $(BUILD) && pwd` --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
 	@rm -fr $(OUTPUT).elf
@@ -138,7 +138,7 @@ $(BUILD):
 #---------------------------------------------------------------------------------
 clean:
 	@echo clean ...
-	@rm -fr $(BUILD) $(TARGET).elf $(TARGET).gba $(KERNEL)
+	@rm -fr $(BUILD) $(TARGET).elf $(TARGET).gba $(TARGET).sav $(KERNEL)
  
  
 #---------------------------------------------------------------------------------
