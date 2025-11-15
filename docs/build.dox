@@ -1,0 +1,31 @@
+/*! \file build.dox
+ *  \defgroup build Build
+ *  \brief Build system, variants, and environment.
+ *  \ingroup build
+ *
+ *  \section build_env Environment
+ *  Requires devkitARM toolchain (variables: `DEVKITPRO`, `DEVKITARM`, `LIBGBA`).
+ *
+ *  \section build_targets Targets
+ *  - Default hardware: `make` builds `ezkernel.gba` then copies to `ezkernel.bin` (final kernel image).
+ *  - Emulator: `make EMU=1` appends `_emu` to target name and DOES NOT create a `.bin` (keeps `.gba` only) for running under an emulator.
+ *  - Clean artifacts: initial `$(BUILD)` rule explicitly removes prior `.elf`, `.gba`, `.sav`, `.bin` before rebuilding.
+ *
+ *  \section build_sources Source Layout
+ *  - `SOURCES`: kernel, drivers (or `fakedriver` when EMU=1), gfx, patch modules, FatFs, APlib.
+ *  - Emulator build removes `src/driver` and adds `src/fakedriver` plus embeds any `diskimg/*.bin` files (FAT images) by adding `diskimg/` to `DATA`.
+ *  - Data assets (fonts, optional disk images) converted via `bin2o` rules to `.o` + generated headers.
+ *
+ *  \section build_flags Flags
+ *  - Architecture: `-mcpu=arm7tdmi -mthumb -mthumb-interwork`.
+ *  - Optimization: `-O -fomit-frame-pointer -ffast-math`.
+ *  - Emulator build adds `-DEMU` for conditional code paths.
+ *
+ *  \section build_theme Theme Switch
+ *  Edit `#define DARK` in `include/gfx/draw.h` before build to toggle dark/light assets (compile-time only).
+ *
+ *  \section build_notes Notes
+ *  - Use `make clean` for manual cleanup; plain `make` already purges previous kernel outputs.
+ *  - Emulator build retains full FatFs (no mock FS) and links embedded disk image(s) for SD access emulation.
+ *  - No dynamic dependency on external scripting; all conversion handled inside make rules.
+ */

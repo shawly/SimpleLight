@@ -1,0 +1,28 @@
+/*! \file plugins.dox
+ *  \defgroup plugins Plugins
+ *  \brief Pogoshell plugin detection and launch integration.
+ *  \ingroup plugins
+ *
+ *  \section plug_formats Supported Extensions
+ *  - Pogoshell / multiboot: `.bin`, `.mb`, `.mbz`, `.mbap`.
+ *  - Emulator core / ROM: `gba/agb`, `gb`, `gbc`, `nes`, `sms`, `gg`, `sg`, `ngp/ngpc`, `pce`, `rom` (MSX), `z80` (ZX), `o2` (Odyssey2), `c8/ch8` (Chip-8), `min` (Pokemon Mini), `dci/vmi` (VMU), plus media/text: `jpg/jpeg/bmp`, `txt`, `mid`, `mod`.
+ *  - Mapping performed in `Show_ICON_filename` using case-insensitive suffix selection.
+ *
+ *  \section plug_layout Layout
+ *  Place Pogoshell plugin binaries under `/SYSTEM/PLUG/<ext>.(bin|gba|mb|mbz|mbap)` where `<ext>` matches ROM extension for association. The browser locates plugin by extension match.
+ *
+ *  \section plug_launch Launch Path
+ *  - Browser identifies plugin/emulator path via suffix; plugin code loaded then branch to embedded wrapper (PocketNES, Goomba, etc.).
+ *  - FAT metadata saved (`Send_FATbuffer`) prior to launching ROM/plugin as required.
+ *
+ *  \section plug_extending Adding Plugins
+ *  1. Provide binary in `/SYSTEM/PLUG/` named `<ext>.(bin|gba|mb|mbz|mbap)`.
+ *  2. Add icon header if new type: `include/images/icon_<ext>.h` (+ dark/light variant if themed).
+ *  3. Extend suffix chain within `Show_ICON_filename` maintaining case-insensitive logic and minimum length checks.
+ *  4. Localize plugin-related UI strings where displayed.
+ *
+ *  \section plug_notes Notes
+ *  - Unrecognized extensions default to generic icon; avoid adding ambiguous multi-extension overlaps.
+ *  - Keep plugin sizes reasonable to avoid PSRAM paging overhead and long VBlank wait loops.
+ *  - Ensure any added emulator core respects 0x20000 block processing limit.
+ */

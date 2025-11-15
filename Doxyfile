@@ -1,0 +1,73 @@
+# Doxygen configuration for SimpleLight
+# Minimal HTML-focused setup.
+
+PROJECT_NAME           = "SimpleLight"
+PROJECT_BRIEF          = "EZ-Flash Omega themed kernel: UI, patching, saves, plugins"
+OUTPUT_DIRECTORY       = docs/out
+CREATE_SUBDIRS         = YES
+
+# Input
+INPUT                  = docs include src
+FILE_PATTERNS          = *.dox *.c *.h *.s
+RECURSIVE              = YES
+EXCLUDE                = build diskimg SYSTEM archive
+EXCLUDE_SYMLINKS       = YES
+
+# Extraction
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = YES
+EXTRACT_STATIC         = YES
+EXTRACT_LOCAL_CLASSES  = YES
+EXTRACT_ANON_NSPACES   = YES
+
+# Build options
+QUIET                  = NO
+WARNINGS               = YES
+WARN_IF_UNDOCUMENTED   = NO
+WARN_IF_DOC_ERROR      = YES
+WARN_AS_ERROR          = NO
+
+# Output formats
+GENERATE_HTML          = YES
+HTML_OUTPUT            = html
+GENERATE_TREEVIEW      = YES
+HTML_DYNAMIC_SECTIONS  = YES
+GENERATE_LATEX         = NO
+GENERATE_MAN           = NO
+GENERATE_RTF           = NO
+GENERATE_XML           = NO
+
+# Source browsing
+SOURCE_BROWSER         = YES
+INLINE_SOURCES         = YES
+STRIP_CODE_COMMENTS    = NO
+REFERENCED_BY_RELATION = YES
+REFERENCES_RELATION    = YES
+CALL_GRAPH             = NO
+CALLER_GRAPH           = NO
+
+# Diagrams (disabled unless Graphviz installed)
+HAVE_DOT               = NO
+CLASS_DIAGRAMS         = NO
+DOT_GRAPH_MAX_NODES    = 50
+
+# Preprocessor
+ENABLE_PREPROCESSING   = YES
+MACRO_EXPANSION        = NO
+EXPAND_ONLY_PREDEF     = NO
+SKIP_FUNCTION_MACROS   = YES
+
+# Indexing
+ALPHABETICAL_INDEX     = YES
+FULL_PATH_NAMES        = NO
+
+# Misc
+GENERATE_TAGFILE       = docs/out/SimpleLight.tag
+USE_MDFILE_AS_MAINPAGE = docs/mainpage.dox
+
+# Optimizations for C firmware style
+OPTIMIZE_OUTPUT_FOR_C  = YES
+MARKDOWN_SUPPORT       = YES
+
+# Ignore leftover .d files
+EXTENSION_MAPPING      = d=c

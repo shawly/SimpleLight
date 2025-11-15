@@ -1,0 +1,33 @@
+/*! \mainpage SimpleLight Firmware Documentation
+ * \section intro Introduction
+ * SimpleLight is a themed EZ-Flash Omega kernel providing a GBA UI for ROM browsing, patching (sleep/reset/RTS/cheat), save management, Pogoshell plugin launching, and visual theming.
+ * Target hardware: Game Boy Advance + EZ-Flash Omega flashcart. Emulator build swaps hardware drivers for test stubs.
+ *
+ * \section goals Design Goals
+ * - Fast, predictable performance (critical code in IWRAM, large buffers in EWRAM).
+ * - Deterministic memory usage (no dynamic allocation).
+ * - Minimal invasive patches; centralized in \ref patching.
+ * - Extensible file type + plugin detection via existing switch logic.
+ *
+ * \section modules Modules
+ * - \ref arch      : High-level architecture & data flow.
+ * - \ref memory    : Memory layout & performance constraints.
+ * - \ref fs        : Filesystem integration (FatFs).
+ * - \ref patching  : Patch pipeline & cheat integration.
+ * - \ref plugins   : Pogoshell plugin detection & launch.
+ * - \ref guidelines: Coding & contribution guidelines.
+ * - \ref extend    : Extension points & workflow.
+ * - \ref build     : Build variants & tooling.
+ *
+ * \section quickstart Quick Start
+ * 1. Ensure DEVKITPRO / DEVKITARM / LIBGBA environment vars are set.
+ * 2. Run `make` for hardware; `make EMU=1` for emulator (produces `_emu.gba`, no `.bin`).
+ * 3. Copy resulting `ezkernel.bin` (hardware build) to flashcart root.
+ * 4. Place ROMs in directories; Pogoshell plugins under `/SYSTEM/PLUG/<ext>.(bin|gba|mb|mbz|mbap)`.
+ * 5. Edit `#define DARK` in `include/gfx/draw.h` to switch theme (compile-time only).
+ * 6. Keep per-ROM size within supported trim limits (<=32MB; EEPROM upper bound reduces patch space).
+ * 7. Avoid modifying cheat arithmetic or patch buffer size constants.
+ *
+ * \section license License
+ * See top-level LICENSE file.
+ */

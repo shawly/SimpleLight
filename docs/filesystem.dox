@@ -1,0 +1,34 @@
+/*! \file filesystem.dox
+ *  \defgroup fs Filesystem
+ *  \brief FatFs integration and file enumeration.
+ *  \ingroup fs
+ *
+ *  \section fs_stack Stack Components
+ *  - FatFs core (`ff.h`, `FATFS`, `FIL`, `DIR`, `FILINFO`).
+ *  - Kernel code calls `f_open`, `f_read`, `f_write`, `f_lseek`, `f_close` exclusively.
+ *
+ *  \section fs_listing Listing Process
+ *  1. Open directory, iterate entries populating `pFolder` (folders) then `pFilename_buffer` (files) up to fixed maxima (`MAX_folder`, `MAX_files`).
+ *  2. Maintain counts `folder_total`, `game_total_SD` for pagination; screen displays at most 10 combined entries (folders first).
+ *  3. Render list with `Show_ICON_filename` selecting icon by case-insensitive suffix; fallback to generic when unknown.
+ *  4. Recently played list updates `p_recently_play` for quick access (not persisted in FS).
+ *
+ *  \section fs_icons Icon Mapping
+ *  Large extension chain covers: `gba/agb`, `gb`, `gbc`, `nes`, `sms`, `gg`, `sg`, `ngp/ngpc`, `jpg/jpeg/bmp`, `txt`, `sv/esv`, `ws/wsc`, `col`, `rom` (MSX), `pce`, `z80`, `o2`, `c8/ch8` (Chip-8), `min` (Pokemon Mini), `dci/vmi` (VMU), `mid` (MIDI), `mod` (module), plus plugin extensions (`bin`, `mb`, `mbz`, `mbap`).
+ *
+ *  \section fs_nor NOR Table
+ *  - `pNorFS` entries store filename, page index, patch flags (`have_patch`, `have_RTS`), size, reserved fields, short gamename.
+ *  - `Show_ICON_filename_NOR` renders NOR list with NOR icon; capacity fixed at `MAX_NOR` (0x40).
+ *
+ *  \section fs_fat FAT Table Buffer
+ *  - `FAT_table_buffer` (0x400 bytes) tail words (0x1F0–0x1FC indices) store size, copy mode, cluster size, save metadata.
+ *  - `Send_FATbuffer(buffer, mode)` writes the table to cart IO: mode 0 (full load), mode 1 (save FAT only), mode 2 (flush & return). Uses DMA then control register sequence.
+ *
+ *  \section fs_errors Error Handling
+ *  On any `f_open` or `f_read` failure: abort quickly, display a localized error string (e.g. `gl_error_0`), avoid blocking VBlank loops.
+ *
+ *  \section fs_extending Extending Listing
+ *  - Add new icon headers under `include/images/` (maintain 16x14 dimensions for list icons).
+ *  - Extend suffix checks in `Show_ICON_filename` maintaining case-insensitive comparisons; ensure at least 2–3 characters before indexing.
+ *  - Keep per-entry processing minimal to preserve frame pacing.
+ */

@@ -1,0 +1,40 @@
+/*! \file memory.dox
+ *  \defgroup memory MemoryModel
+ *  \brief Memory placement and performance constraints.
+ *  \ingroup memory
+ *
+ *  \section mem_layout Layout Strategy
+ *  - IWRAM (0x03000000–0x03007FFF, on-chip fast WRAM): time-critical routines tagged `IWRAM_CODE` (e.g. `Refresh_filename`, `PatchInternal`, `SetPSRampage`, `Send_FATbuffer`, flash write helpers). Not all patch entry points (e.g. `GBApatch_PSRAM`) are in IWRAM.
+ *  - EWRAM (0x02000000–0x0203FFFF, external WRAM): big buffers tagged `EWRAM_BSS` (\ref pReadCache, file/NOR tables, FAT table buffer, recent list).
+ *  - VRAM (0x06000000–0x06017FFF): Mode 3 framebuffer at `VideoBuffer` accessed by drawing primitives; a safe unused VRAM region hosts injected patch code.
+ *  - Save RAM (0x0E000000–): cartridge SRAM/FLASH used for game saves (`SAVE_sram_base`).
+ *  - Game Pak ROM/PSRAM (0x08000000+): read-only ROM and cart-mapped PSRAM/FLASH, accessed via `PSRAMBase_S98` / `FlashBase_S98` (EZ-Flash Omega specific) within GBAtek’s game pak address space.
+ *
+ *  \section mem_buffers Key Buffers
+ *  - `pReadCache` (size 0x20000) staging for block reads and patch writes (hard upper limit per iteration).
+ *  - `FAT_table_buffer` (0x400 bytes) carries boot metadata; tail words indices 0x1F0–0x1FC encode size/mode/cluster/save fields.
+ *  - `pFilename_buffer` (MAX_files=0x200), `pFolder` (MAX_folder=0x100), `pNorFS` (MAX_NOR=0x40) provide deterministic table capacities.
+ *
+ *  \section mem_constraints Constraints
+ *  - Never read or patch more than 0x20000 bytes per iteration (enforced by copy loops).
+ *  - Dynamic patch length region (0x300 / 0x1000 / 0x2000) must fit inside final trimmed area without crossing sector boundary.
+ *  - Maintain alignment for code/data arrays (e.g. 4-byte alignment of `GAMECODE`) to match ARM word access requirements.
+ *  - Avoid dynamic allocation; all memory is static for determinism.
+ *  - Respect GBA address ranges: do not write outside WRAM/VRAM/SRAM/game pak regions documented there.
+ *
+ *  \section mem_dma DMA Usage
+ *  Use `dmaCopy` for:
+ *  - Block fill operations (\ref Clear uses a prepared line buffer then DMA per line).
+ *  - SD sector transfers and NOR programming staging.
+ *  - Patch binary injection (copy patch blobs into unused VRAM region before branching).
+ *  - Icon and image blits when not using transparency loops.
+ *
+ *  \section mem_performance Performance Tips
+ *  - Keep inner loops small and in IWRAM; offload formatting/string logic outside critical paths.
+ *  - Reuse `pReadCache` and preallocated tables; avoid per-frame allocations or large stack frames.
+ *  - Use transparent blits sparingly; prefer bulk DMA for opaque regions.
+
+ *  \section mem_reference Hardware Reference
+ *  - For full GBA memory map and timing details, see GBAtek (problemkaputt.de), especially the memory and I/O maps.
+ *  - All addresses and regions used here (WRAM, VRAM, save RAM, game pak) are chosen to align with GBAtek’s documented layout; cart-specific registers (e.g. EZ-Flash control at 0x09XXXXXX) live in the game pak I/O space.
+ */

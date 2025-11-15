@@ -1,0 +1,32 @@
+/*! \file extension_points.dox
+ *  \defgroup extend Extension
+ *  \brief Key extension points for new features.
+ *  \ingroup extend
+ *
+ *  \section ext_filetypes File Types
+ *  - Extend suffix logic in `Show_ICON_filename`.
+ *  - Provide new icon header under `include/images/`.
+ *
+ *  \section ext_plugins Pogoshell Plugins
+ *  - Add plugin binary to `/SYSTEM/PLUG/` named `<ext>.(bin|gba|mb|mbz|mbap)` where `<ext>` matches target ROM suffix.
+ *  - Ensure matching extension; add icon & mapping in `Show_ICON_filename` for display.
+ *  - Keep plugin size modest to avoid long paging delays.
+ *
+ *  \section ext_settings Settings Toggles
+ *  - Allocate unused slot following existing `gl_toggle_*` pattern (check for free indices before adding).
+ *  - Persist via save handling (e.g. `save_set_info_SELECT`); ensure localization for labels.
+ *  - Keep runtime cost minimal (avoid per-frame scanning when simple flags suffice).
+ *
+ *  \section ext_patches Patches
+ *  - Insert pattern detection & `Add2` calls in `gba_patch.c` only (avoid dispersing logic).
+ *  - Validate trim footprint remains within dynamic patch budget (0x300/0x1000/0x2000).
+ *  - Provide comment documenting opcode signature chosen.
+ *
+ *  \section ext_localization Localization
+ *  - Add extern in `lang.h`; define both language arrays in `lang.c`.
+ *  - Render using `DrawHZText12`.
+ *
+ *  \section ext_icons Icons
+ *  - Add image asset; ensure dimensions 16x14 for list icons; supply both dark/light variants when affected by theme.
+ *  - Reference via existing extension chain; maintain order grouping similar systems.
+ */

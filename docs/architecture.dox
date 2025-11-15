@@ -1,0 +1,37 @@
+/*! \file architecture.dox
+ *  \defgroup arch Architecture
+ *  \brief Core structural overview of SimpleLight.
+ *  \ingroup arch
+ *
+ *  \section arch_overview Overview
+ *  Entry/UI loop resides in `src/kernel/ezkernel.c` managing:
+ *  - Input scanning (`scanKeys`), frame pacing via multiple `VBlankIntrWait` points.
+ *  - File list buffers: `pFilename_buffer`, `pFolder`, `pNorFS` (see \ref FM_NOR_FS, \ref FM_FILE_FS) plus recent list `p_recently_play`.
+ *  - Rendering via primitives in `src/gfx/draw.c` (\ref Clear, \ref ClearWithBG, \ref DrawPic, \ref DrawHZText12, \ref DEBUG_printf, \ref ShowbootProgress).
+ *  - Boot decision flow (PSRAM copy handled in `ezkernel.c`, NOR flashing handled in `src/driver/nor_flash.c`, plugin/emulator handoff) including patch invocation (`GBApatch_PSRAM` for PSRAM, `GBApatch_NOR` during NOR write loop).
+ *
+ *  \section arch_data Data Structures
+ *  - `FM_FILE_FS`: transient SD file metadata (name + filesize).
+ *  - `FM_NOR_FS`: NOR-flashed game metadata (filename, page, patch flags, size).
+ *  - `FM_Folder_FS`: folder entries for hierarchical navigation.
+ *  All allocated statically in EWRAM using `EWRAM_BSS` for predictable layout.
+ *
+ *  \section arch_flow Control Flow Highlights
+ *  - File browser populates buffers then draws per page (10 lines) using icon mapping logic in `Show_ICON_filename`.
+ *  - Selection triggers copy + patch:
+ *    - PSRAM path: 0x20000-byte blocks read, optional `PatchInternal` scan then `GBApatch_PSRAM` once after first block load.
+ *    - NOR path (`nor_flash.c`): erase sector, read 0x20000 block, run `PatchInternal` + `GBApatch_NOR`, then program flash (`WriteFlash_with32word`).
+ *  - Patch phase computes trim size (`SetTrimSize`, dynamic patch length 0x300 / 0x1000 (RTS) / 0x2000 (cheat)) and installs hook branches via `Add2` queue + `Patch_B_address`.
+ *
+ *  \section arch_theme Theme Switching
+ *  Compile-time `#define DARK` (set in `include/gfx/draw.h`) selects dark/light image assets; add assets under `include/images/dark/` or `light/` mirroring names. There is no runtime theme toggle.
+
+ *  \section arch_state Additional UI/State Elements
+ *  - Bold text toggle (`gl_toggle_bold`) alters glyph rendering in `DrawHZText12`.
+ *  - Folder navigation state arrays: `p_folder_select_show_offset`, `p_folder_select_file_select`, and `folder_select` track hierarchical traversal.
+ *  - Language selection uses `gl_select_lang` (magic value `0xE1E1` denotes English) affecting manuals and help text.
+ *  - Progress & diagnostics: `ShowbootProgress` used in long copy/flash loops; `DEBUG_printf` logs in a scrollable overlay.
+ *
+ *  \section arch_lang Localization
+ *  Strings declared in `include/lang.h` and set in `lang.c`; early initialization picks EN vs CN fonts; drawing uses `DrawHZText12` for both ASCII and double-byte glyphs.
+ */

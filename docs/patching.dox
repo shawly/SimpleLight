@@ -1,0 +1,47 @@
+/*! \file patching.dox
+ *  \defgroup patching Patching
+ *  \brief ROM patch pipeline (reset, sleep, RTS, cheat, special cases).
+ *  \ingroup patching
+ *
+ *  \section patch_flow Flow Summary
+ *  1. Game selection: PSRAM path reads first block; NOR path begins sector erase loop.
+ *  2. Each 0x20000-byte block read into \ref pReadCache (hard cap by buffer size).
+ *  3. `PatchInternal` scans ARM opcodes in the block building a queue (via `Add2`) of branch rewrite targets.
+ *  4. Trim size computed by `SetTrimSize` (dynamic patch length budget) ensuring alignment & sector boundary constraints (EEPROM vs SRAM/FLASH rules).
+ *  5. Hook branch installed (`Patch_B_address`) redirecting execution to injected handler region in unused VRAM.
+ *  6. Feature patches applied: `Patch_Reset_Sleep`, `Patch_RTS_only`, or `Patch_RTS_Cheat` chosen based on flags (`gl_rts_on`, `gl_cheat_on`, `gl_sleep_on`, `gl_reset_on`).
+ *  7. NES / special game adjustments (`CheckNes` + `PatchNes`, `PatchDragonBallZ`, Fire Emblem patches) integrated early.
+ *  8. Optional `.pat` file generation/loading (`Make_pat_file`, `Check_pat`) caches patch metadata.
+ *
+ *  \section patch_trim Trim Logic Details
+ *  - Scans tail region for diverging fill pattern establishing `iTrimSize`.
+ *  - Dynamic patch length (PATCH_LENGTH): base 0x300; increases to 0x1000 when RTS enabled; to 0x2000 when cheats active.
+ *  - Ensures `(iTrimSize + PATCH_LENGTH)` does not exceed medium limits (8MB /16MB /32MB caps) or cross a NOR sector.
+ *  - EEPROM save types reduce allowable maximum by PATCH_LENGTH at upper size boundaries.
+ *
+ *  \section patch_cheat Cheat Handling
+ *  - Cheat count `gl_cheat_count` gates combined RTS + Cheat patch path.
+ *  - Address arithmetic (0x02000000 / 0x03000000 regions) must remain unmodified; do not alter normalization math.
+ *  - Expanded patch footprint when cheats active consumes extra budget (PATCH_LENGTH=0x2000).
+ *
+ *  \section patch_helpers Helper Routines
+ *  - `Add2` queues offset/value pairs; `Patch_B_address` commits them with a branch to handler.
+ *  - `WriteFlash_with32word` (NOR) accelerates programming using 32-word programming primitive.
+ *  - `Send_FATbuffer` persists updated FAT metadata prior to ROM execution when required.
+ *
+ *  \section patch_special Special Cases
+ *  - NES wrappers detected (`CheckNes`) and patched (`PatchNes`) by inserting loader stubs and relocating jump tables.
+ *  - Dragon Ball Z / specific titles patched for compatibility (`PatchDragonBallZ`).
+ *  - Fire Emblem variants apply dedicated assembly patch blobs (start/end symbol pairs).
+ *
+ *  \section patch_extending Adding a Patch
+ *  - Identify stable opcode pattern; avoid fragile absolute addresses if possible.
+ *  - Append logic in `gba_patch.c` reusing `Add2`; avoid scattering write calls.
+ *  - Validate footprint against dynamic PATCH_LENGTH and sector boundary rules.
+ *  - Provide localized progress or error logging via `DEBUG_printf` for complex detection paths.
+ *
+ *  \section patch_limits Limits
+ *  - Patch length budgets: 0x300 (base), 0x1000 (RTS), 0x2000 (Cheat or RTS+Cheat).
+ *  - Do not modify cheat arithmetic or trim scan logic.
+ *  - Single block processing limit: 0x20000 bytes (never exceed).
+ */

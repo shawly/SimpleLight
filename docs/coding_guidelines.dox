@@ -1,0 +1,48 @@
+/*! \file coding_guidelines.dox
+ *  \defgroup guidelines Guidelines
+ *  \brief Project-specific C coding standards.
+ *  \ingroup guidelines
+ *
+ *  \section guide_memory Memory & Performance
+ *  - Place hot loops/functions in IWRAM (`IWRAM_CODE`); large tables/buffers in EWRAM (`EWRAM_BSS`).
+ *  - Never exceed 0x20000 bytes per read/write/patch iteration (\ref pReadCache cap).
+ *  - Use `dmaCopy` for bulk transfers & blits; limit `memcpy` to small (<64B) or struct copy cases.
+ *  - Avoid dynamic allocation entirely; all memory is static for determinism.
+ *
+ *  \section guide_safety Safety
+ *  - Return early on any FatFs error (non-`FR_OK`); show progress or localized error text.
+ *  - Validate indices (`game_total_SD`, `folder_total`, `gl_cheat_count`, page offsets) before table access.
+ *  - Treat FAT table tail words (indices 0x1F0–0x1FC) as reserved metadata; document any change.
+ *  - Preserve patch arithmetic constants (trim scanning, cheat address normalization) unmodified.
+ *
+ *  \section guide_patching Patching
+ *  - Centralize new patch logic in `gba_patch.c`; reuse `Add2` + `Patch_B_address` pattern.
+ *  - Respect dynamic PATCH_LENGTH (0x300 base, 0x1000 RTS, 0x2000 Cheat) when adding code.
+ *  - Do not alter cheat arithmetic or address normalization code.
+ *
+ *  \section guide_style Style
+ *  - Use fixed-width types (`u8`, `u16`, `u32`) for register/ROM manipulation.
+ *  - Introduce `#define` only for literals reused ≥3 times (exclude hardware addresses which remain literal).
+ *  - Maintain existing global naming (`gl_*`, `pReadCache`, `pNorFS`). Avoid unnecessary renames or refactors.
+ *  - Keep line length moderate; favor clarity over clever macros.
+ *
+ *  \section guide_ui UI & Drawing
+ *  - Use existing primitives (`Clear`, `ClearWithBG`, `DrawPic`, `DrawHZText12`, `ShowbootProgress`).
+ *  - Minimize per-frame recomputation; precompute strings/icons where feasible.
+ *  - Bold text toggle (`gl_toggle_bold`) logic must remain efficient (avoid extra branching inside glyph loop).
+ *
+ *  \section guide_localization Localization
+ *  - Add new strings to `lang.h` + both EN/CN variants in `lang.c`.
+ *  - Avoid hardcoded literals; reuse localized error messages (e.g. `gl_error_0`).
+ *  - Maintain encoding assumptions (ASCII + double-byte glyphs) respected by `DrawHZText12`.
+ *
+ *  \section guide_review Review Checklist
+ *  1. IWRAM/EWRAM attributes intact.
+ *  2. No block >0x20000 processed in one iteration.
+ *  3. FAT tail unchanged or documented.
+ *  4. Dynamic PATCH_LENGTH respected; trim size still valid.
+ *  5. New strings localized EN & CN.
+ *  6. Emulator build (`make EMU=1`) compiles cleanly.
+ *  7. Long operations show progress.
+ *  8. No alteration of cheat math or address normalization.
+ */
